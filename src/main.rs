@@ -1,5 +1,5 @@
 // use std::fs;
-// use std::fmt;
+use std::fmt;
 
 // enum Colors {
 //     Red,
@@ -46,37 +46,59 @@ enum Item {
     MyCustom(Custom),
 }
 
-// struct Items(Vec<Item>);
+struct DisplayItem(Vec<Item>);
 
-// impl fmt::Display for Item {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self {
-//             Item::Number(it) => write!(f, "{}", it),
-//             Item::String(it) => write!(f, "{}", it),
-//             Item::MyCustom(it) => write!(f, "{} <{}>", it.name, it.age),
-//         }
-//     }
-// }
+impl fmt::Display for Item {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let _ = match self {
+            Item::Number(it) => write!(f, "{}", it),
+            Item::String(it) => write!(f, "{}", it),
+            Item::MyCustom(it) => write!(f, "{} <{}>", it.name, it.age),
+        };
+        return Ok(());
+    }
+}
 
-// impl fmt::Display for Items {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         // for v in &self {
-//         //     match v {
-//         //         Item::Number(it) => write!(f, "{}", it),
-//         //         Item::String(it) => write!(f, "{}", it),
-//         //         Item::MyCustom(it) => write!(f, "{} <{}>", it.name, it.age),
-//         //     }
-//         // }
-//         &self
+impl fmt::Display for DisplayItem {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        /*
+         we need to get vector from DisplayItem wrapper
+        we added that wrapper as we can not implement
+        a trait for a type defined outside the current crate
+        ---
+        OFFICIAL ERROR: only traits defined in the current crate can be
+        implemented for types defined outside of the crate
+        */
+        let DisplayItem(vector) = &self;
 
-//         Ok(())
-//     }
-// }
+        for vector_item in vector {
+            // why did this work?!??!?!??!
+
+            // this worked because writeln! and write! gives a Result
+            let _ = match vector_item {
+                Item::MyCustom(it) => writeln!(f, "{} ({})", it.name, it.age),
+                Item::Number(it) => writeln!(f, "{}", it),
+                Item::String(it) => writeln!(f, "{}", it),
+            };
+        }
+
+        return Ok(());
+    }
+}
 
 fn append(items: &mut Vec<Item>) {
     items.push(Item::String("Hello fem".into()));
 }
 
+fn append_item(items: &mut Vec<Item>) {
+    items.push(Item::MyCustom(Custom {
+        age: 10,
+        name: "Ayush".into(),
+    }));
+}
+fn append_number(items: &mut Vec<Item>) {
+    items.push(Item::Number(10));
+}
 fn main() {
     // --------------------------------------------------------------
     // let data = vec![1, 2, 3];
@@ -113,5 +135,7 @@ fn main() {
     let mut foo: Vec<Item> = vec![];
 
     append(&mut foo);
-    // println!("{}", foo);
+    append_item(&mut foo);
+    append_number(&mut foo);
+    println!("{}", DisplayItem(foo));
 }
