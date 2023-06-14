@@ -167,11 +167,24 @@ fn main() {
     // println!("{:?}", multiply(None));
     // --------------------------------------------------------------
 
-    let mut terminal_arguments = env::args();
+    // let mut terminal_arguments = env::args();
+    // if let Some(filename) = terminal_arguments.nth(1) {
+    //     if let Ok(data) = fs::read_to_string(filename) {
+    //         data.lines().for_each(|val| println!("{}", val));
+    //     }
+    // }
+    // --------------------------------------------------------------
 
+    let mut terminal_arguments = env::args();
     if let Some(filename) = terminal_arguments.nth(1) {
         if let Ok(data) = fs::read_to_string(filename) {
-            data.lines().for_each(|val| println!("{}", val));
+            data.lines().for_each(|val| {
+                if let Ok(num) = val.parse::<usize>() {
+                    println!("{}", num);
+                } else {
+                    println!("Line not number");
+                }
+            });
         }
     }
 }
