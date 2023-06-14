@@ -40,25 +40,34 @@
 
 // --------------------------------------------------------------
 
-type Custom = {
-  name: string
-  age: number
+// type Custom = {
+//   name: string
+//   age: number
+// }
+
+// type Item = number | string | Custom
+
+// function append(items: Item[]) {
+//   items.push('Hello fem!')
+// }
+
+// const arr: Item[] = []
+
+// const numArr: number[] = []
+
+// console.log(arr)
+// append(arr)
+// console.log(arr)
+
+// console.log(numArr)
+// append(numArr)
+// console.log(numArr)
+
+// --------------------------------------------------------------
+
+function practice(num: number | undefined): number {
+  return num ? num * 5 : 0
 }
 
-type Item = number | string | Custom
-
-function append(items: Item[]) {
-  items.push('Hello fem!')
-}
-
-const arr: Item[] = []
-
-const numArr: number[] = []
-
-console.log(arr)
-append(arr)
-console.log(arr)
-
-console.log(numArr)
-append(numArr)
-console.log(numArr)
+console.log(practice(10))
+console.log(practice(undefined))
