@@ -113,8 +113,8 @@
 //     items.push(Item::Number(10));
 // }
 
-fn multiply(num: Option<isize>) -> isize {
-    return num.unwrap_or(0) * 5;
+fn multiply(num: Option<isize>) -> Option<isize> {
+    return Some(num? * 5);
 }
 
 fn main() {
@@ -158,6 +158,6 @@ fn main() {
     // println!("{}", DisplayItem(foo));
     // --------------------------------------------------------------
 
-    println!("{}", multiply(Some(10)));
-    println!("{}", multiply(None));
+    println!("{:?}", multiply(Some(10)));
+    println!("{:?}", multiply(None));
 }
