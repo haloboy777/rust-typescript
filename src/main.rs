@@ -1,5 +1,5 @@
 // use std::fs;
-use std::fmt;
+use std::{fmt, vec};
 
 // enum Colors {
 //     Red,
@@ -50,37 +50,50 @@ struct DisplayItem(Vec<Item>);
 
 impl fmt::Display for Item {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let _ = match self {
+        match self {
             Item::Number(it) => write!(f, "{}", it),
             Item::String(it) => write!(f, "{}", it),
             Item::MyCustom(it) => write!(f, "{} <{}>", it.name, it.age),
-        };
-        return Ok(());
+        }
     }
 }
 
 impl fmt::Display for DisplayItem {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         /*
-         we need to get vector from DisplayItem wrapper
-        we added that wrapper as we can not implement
-        a trait for a type defined outside the current crate
-        ---
-        OFFICIAL ERROR: only traits defined in the current crate can be
-        implemented for types defined outside of the crate
+            we need to get vector from DisplayItem wrapper
+            we added that wrapper as we can not implement
+            a trait for a type defined outside the current crate i.e. Vec<T>
+            ---
+            OFFICIAL ERROR: only traits defined in the current crate can be
+            implemented for types defined outside of the crate
         */
         let DisplayItem(vector) = &self;
 
-        for vector_item in vector {
-            // why did this work?!??!?!??!
+        // for vector_item in vector {
+        //     // why did this work?!??!?!??!
 
-            // this worked because writeln! and write! gives a Result
-            let _ = match vector_item {
+        //     // this worked because writeln! and write! gives a Result
+        //     let _ = match vector_item {
+        //         Item::MyCustom(it) => writeln!(f, "{} ({})", it.name, it.age),
+        //         Item::Number(it) => writeln!(f, "{}", it),
+        //         Item::String(it) => writeln!(f, "{}", it),
+        //     };
+        // }
+
+        // written using for_each
+        let (new_vec, error): (Vec<_>, Vec<_>) = vector
+            .iter()
+            .map(|vector_item| match vector_item {
                 Item::MyCustom(it) => writeln!(f, "{} ({})", it.name, it.age),
                 Item::Number(it) => writeln!(f, "{}", it),
                 Item::String(it) => writeln!(f, "{}", it),
-            };
-        }
+            })
+            .partition(Result::is_ok);
+        let new_vec: Vec<_> = new_vec.into_iter().map(Result::unwrap).collect();
+        let errors: Vec<_> = error.into_iter().map(Result::unwrap_err).collect();
+        println!("New Vec: {:?}", new_vec);
+        println!("Errors: {:?}", errors);
 
         return Ok(());
     }
@@ -93,7 +106,7 @@ fn append(items: &mut Vec<Item>) {
 fn append_item(items: &mut Vec<Item>) {
     items.push(Item::MyCustom(Custom {
         age: 10,
-        name: "Ayush".into(),
+        name: String::from("Ayush"),
     }));
 }
 fn append_number(items: &mut Vec<Item>) {
