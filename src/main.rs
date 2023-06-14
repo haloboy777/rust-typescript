@@ -113,8 +113,13 @@
 //     items.push(Item::Number(10));
 // }
 
-fn multiply(num: Option<isize>) -> Option<isize> {
-    return Some(num? * 5);
+// fn multiply(num: Option<isize>) -> Option<isize> {
+//     return Some(num? * 5);
+// }
+
+fn practice(list: Vec<usize>, index: usize) -> usize {
+    // return list.get(index).unwrap_or(&index) * 5;
+    return list.get(index).map_or(index, |item| *item) * 5;
 }
 
 fn main() {
@@ -158,6 +163,7 @@ fn main() {
     // println!("{}", DisplayItem(foo));
     // --------------------------------------------------------------
 
-    println!("{:?}", multiply(Some(10)));
-    println!("{:?}", multiply(None));
+    // println!("{:?}", multiply(Some(10)));
+    // println!("{:?}", multiply(None));
+    // --------------------------------------------------------------
 }

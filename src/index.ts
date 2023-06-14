@@ -65,9 +65,17 @@
 
 // --------------------------------------------------------------
 
-function practice(num: number | undefined): number {
-  return num ? num * 5 : 0
+// function practice(num: number | undefined): number {
+//   return num ? num * 5 : 0
+// }
+
+// console.log(practice(10))
+// console.log(practice(undefined))
+
+// --------------------------------------------------------------
+
+function practice(list: number[], index: number) {
+  return (list[index] ?? index) * 5
 }
 
-console.log(practice(10))
-console.log(practice(undefined))
+console.log(practice([1, 2, 3], 4))
