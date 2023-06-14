@@ -1,4 +1,4 @@
-// use std::fs;
+use std::{env, fs};
 // use std::{fmt, vec};
 
 // enum Colors {
@@ -117,10 +117,10 @@
 //     return Some(num? * 5);
 // }
 
-fn practice(list: Vec<usize>, index: usize) -> usize {
-    // return list.get(index).unwrap_or(&index) * 5;
-    return list.get(index).map_or(index, |item| *item) * 5;
-}
+// fn practice(list: Vec<usize>, index: usize) -> usize {
+//     // return list.get(index).unwrap_or(&index) * 5;
+//     return list.get(index).map_or(index, |item| *item) * 5;
+// }
 
 fn main() {
     // --------------------------------------------------------------
@@ -166,4 +166,12 @@ fn main() {
     // println!("{:?}", multiply(Some(10)));
     // println!("{:?}", multiply(None));
     // --------------------------------------------------------------
+
+    let mut terminal_arguments = env::args();
+
+    if let Some(filename) = terminal_arguments.nth(1) {
+        if let Ok(data) = fs::read_to_string(filename) {
+            data.lines().for_each(|val| println!("{}", val));
+        }
+    }
 }

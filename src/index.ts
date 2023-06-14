@@ -74,8 +74,22 @@
 
 // --------------------------------------------------------------
 
-function practice(list: number[], index: number) {
-  return (list[index] ?? index) * 5
-}
+// function practice(list: number[], index: number) {
+//   return (list[index] ?? index) * 5
+// }
 
-console.log(practice([1, 2, 3], 4))
+// console.log(practice([1, 2, 3], 4))
+
+// --------------------------------------------------------------
+
+import fs from 'fs'
+
+const filename = process.argv[2]
+
+if (filename) {
+  const file = fs.readFileSync(filename)
+  file
+    .toString()
+    .split('\n')
+    .forEach((el) => console.log(el))
+}
