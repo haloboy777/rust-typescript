@@ -1,4 +1,4 @@
-use std::{env, fs};
+// use std::{env, fs};
 // use std::{fmt, vec};
 
 // enum Colors {
@@ -175,16 +175,21 @@ fn main() {
     // }
     // --------------------------------------------------------------
 
-    let mut terminal_arguments = env::args();
-    if let Some(filename) = terminal_arguments.nth(1) {
-        if let Ok(data) = fs::read_to_string(filename) {
-            data.lines().for_each(|val| {
-                if let Ok(num) = val.parse::<usize>() {
-                    println!("{}", num);
-                } else {
-                    println!("Line not number");
-                }
-            });
-        }
-    }
+    // let mut terminal_arguments = env::args();
+    // if let Some(filename) = terminal_arguments.nth(1) {
+    //     if let Ok(data) = fs::read_to_string(filename) {
+    //         data.lines().for_each(|val| {
+    //             if let Ok(num) = val.parse::<usize>() {
+    //                 println!("{}", num);
+    //             } else {
+    //                 println!("Line not number");
+    //             }
+    //         });
+    //     }
+    // }
+    let foo = MyStruct { age: 0 }; 
+}
+
+struct MyStruct {
+    age: usize,
 }

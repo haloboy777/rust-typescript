@@ -93,20 +93,22 @@
 //     .split('\n')
 //     .forEach((el) => console.log(el))
 // }
-
 // --------------------------------------------------------------
-import fs from 'fs'
 
-const filename = process.argv[2]
+// import fs from 'fs'
 
-if (filename) {
-  const file = fs.readFileSync(filename)
-  file
-    .toString()
-    .split('\n')
-    .forEach((el) => {
-      const num = parseInt(el)
-      if (isNaN(num)) console.log('Line not number')
-      else console.log(el)
-    })
-}
+// const filename = process.argv[2]
+
+// if (filename) {
+//   const file = fs.readFileSync(filename)
+//   file
+//     .toString()
+//     .split('\n')
+//     .forEach((el) => {
+//       const num = parseInt(el)
+//       if (isNaN(num)) console.log('Line not number')
+//       else console.log(el)
+//     })
+// }
+// --------------------------------------------------------------
+
