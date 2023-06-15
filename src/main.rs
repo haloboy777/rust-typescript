@@ -187,9 +187,9 @@ fn main() {
     //         });
     //     }
     // }
-    let foo = MyStruct { age: 0 }; 
+    // let foo = MyStruct { age: 0 }; 
 }
 
-struct MyStruct {
-    age: usize,
-}
+// struct MyStruct {
+//     age: usize,
+// }
