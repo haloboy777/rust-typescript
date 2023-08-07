@@ -1,42 +1,37 @@
+use shapes::collisions::Collidable;
+
+use crate::shapes::{circle::Circle, rect::Rect};
+
+mod shapes;
+
 fn main() {
-    // let items = vec![1, 2, 3].iter().map(|x| x+1);
-    // println!("{:?}", items);
+    let rect = Rect {
+        x: 0.0,
+        y: 0.0,
+        width: 10.0,
+        height: 10.0,
+    };
+    let rect2 = Rect {
+        x: 0.0,
+        y: 0.0,
+        width: 10.0,
+        height: 10.0,
+    };
+    let circ = Circle {
+        radius: 1.0,
+        x: 0.0,
+        y: 0.0,
+    };
+    let circ2 = Circle {
+        radius: 3.0,
+        x: 3.0,
+        y: 3.0,
+    };
 
-    /*
-    This code doesn't work
-
-    lets go line by line here
-
-    - A place to hold our vector which will eventually come
-    let items =
-
-    - A temporary place in memory with [1,2,3] values arranged in a vector
-    vec![1,2,3]
-
-    - creating an iterator with reference to items in vector
-    - let items: Iter<'_, i32>
-    .iter()
-
-    - Now for the crazy part..
-    - Map: Map is basically a data structure which holds
-        = the function to apply and
-        = the data to apply it on
-
-    - and once we start iterating over it the iterator
-    - then it will start to execute the mapped function for us.
-    */
-
-    // Now the working data
-
-    let data = vec![1, 2, 3];
-    let item_mapped_iter = data.iter().map(|x| x * 2);
-
-    // let item_mapped_iter: Map<Iter<'_, i32>, impl Fn(&i32) -> i32>
-
-    // MAP IS JUST A MAP!!!!
-    // ARE YOU FUCKING KIDDING ME!?!?!?!?!?!?
-
-    for item in item_mapped_iter {
-        println!("{item}")
-    }
+    // rect.collide(&rect2);
+    // circ.collide(&circ2);
+    // rect.collide(&circ);
+    println!("rect collides with rect2: {}", rect.collide(&rect2));
+    println!("circ collides with circ2: {}", circ.collide(&circ2));
+    println!("rect collides with circ: {}", rect.collide(&circ));
 }
