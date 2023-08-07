@@ -1,6 +1,4 @@
-use shapes::collisions::Collidable;
-
-use crate::shapes::{circle::Circle, rect::Rect};
+use crate::shapes::{circle::Circle, rect::Rect, collisions::Collidable};
 
 mod shapes;
 

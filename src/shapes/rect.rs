@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use super::{area::Area, circle::Circle, collisions::Collidable};
+use super::{area::Area, collisions::{Points, Contains}};
 
 pub struct Rect {
     pub x: f64,
@@ -40,24 +40,20 @@ impl Display for Rect {
     }
 }
 
-impl Collidable<Rect> for Rect {
-    fn collide(&self, other: &Rect) -> bool {
-        for point in other {
-            if self.contains_point(point) {
-                return true;
-            }
-        }
-        return false;
+impl Points for Rect {
+    fn points(&self) -> super::collisions::PointIter {
+        return vec![
+            (self.x, self.y),
+            (self.x + self.width, self.y),
+            (self.x, self.y + self.height),
+            (self.x + self.width, self.y + self.height),
+        ]
+        .into();
     }
 }
-impl Collidable<Circle> for Rect {
-    fn collide(&self, other: &Circle) -> bool {
-        for point in other {
-            if self.contains_point(point) {
-                return true;
-            }
-        }
-        return false;
+impl Contains for Rect {
+    fn contains_point(&self, point: (f64, f64)) -> bool {
+        return self.contains_point(point);
     }
 }
 
