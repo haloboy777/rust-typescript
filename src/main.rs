@@ -1,35 +1,63 @@
-use crate::shapes::{circle::Circle, rect::Rect, collisions::Collidable};
+use std::str::FromStr;
+
+use crate::shapes::{circle::Circle, collisions::Collidable, rect::Rect};
+use anyhow::Result;
+use shapes::collisions::{Contains, Points};
 
 mod shapes;
 
-fn main() {
-    let rect = Rect {
-        x: 0.0,
-        y: 0.0,
-        width: 10.0,
-        height: 10.0,
-    };
-    let rect2 = Rect {
-        x: 0.0,
-        y: 0.0,
-        width: 10.0,
-        height: 10.0,
-    };
-    let circ = Circle {
-        radius: 1.0,
-        x: 0.0,
-        y: 0.0,
-    };
-    let circ2 = Circle {
-        radius: 3.0,
-        x: 3.0,
-        y: 3.0,
-    };
+#[derive(Debug)]
+enum Shape {
+    Rectx(Rect),
+    Circle(Circle),
+}
 
-    // rect.collide(&rect2);
-    // circ.collide(&circ2);
-    // rect.collide(&circ);
-    println!("rect collides with rect2: {}", rect.collide(&rect2));
-    println!("circ collides with circ2: {}", circ.collide(&circ2));
-    println!("rect collides with circ: {}", rect.collide(&circ));
+impl FromStr for Shape {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
+        let (shape, data) = s.split_once(" ").unwrap_or(("", ""));
+        match shape {
+            "rect" => return Ok(Shape::Rectx(Rect::from_str(data)?)),
+            "circle" => return Ok(Shape::Circle(Circle::from_str(data)?)),
+            _ => return Err(anyhow::anyhow!("Invalid shape")),
+        }
+    }
+}
+
+impl Points for &Shape {
+    fn points(&self) -> shapes::collisions::PointIter {
+        match self {
+            Shape::Rectx(r) => return r.points(),
+            Shape::Circle(c) => return c.points(),
+        }
+    }
+}
+
+impl Contains for &Shape {
+    fn contains_point(&self, point: (f64, f64)) -> bool {
+        match self {
+            Shape::Rectx(r) => return r.contains_point(point),
+            Shape::Circle(c) => return c.contains_point(point),
+        }
+    }
+}
+
+fn main() -> Result<()> {
+    // read from file shapes
+    let file = std::fs::read_to_string("shapes")?;
+
+    let shapes = file
+        .lines()
+        .filter_map(|x| x.parse::<Shape>().ok())
+        .collect::<Vec<_>>();
+
+    shapes
+        .iter()
+        .skip(1)
+        .zip(shapes.iter().take(shapes.len() - 1))
+        .filter(|(x, y)| x.collide(y))
+        .for_each(|(x, y)| println!("{:?} collides with {:?}", x, y));
+
+    return Ok(());
 }

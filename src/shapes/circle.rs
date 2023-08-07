@@ -1,7 +1,11 @@
-use std::{f64::consts::PI, fmt::Display};
+use std::{f64::consts::PI, fmt::Display, str::FromStr};
 
-use super::{area::Area, collisions::{Points, Contains}};
+use super::{
+    area::Area,
+    collisions::{Contains, Points},
+};
 
+#[derive(Debug, Clone)]
 pub struct Circle {
     pub x: f64,
     pub y: f64,
@@ -33,5 +37,19 @@ impl Area for Circle {
 impl Display for Circle {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         return write!(f, "Circle({}, {}): {}", self.x, self.y, self.radius);
+    }
+}
+
+impl FromStr for Circle {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let parts = s.split(" ").collect::<Vec<_>>();
+        if parts.len() != 3 {
+            return Err(anyhow::anyhow!("Invalid number of parts"));
+        }
+        let x = parts[0].parse::<f64>()?;
+        let y = parts[1].parse::<f64>()?;
+        let radius = parts[2].parse::<f64>()?;
+        return Ok(Circle { x, y, radius });
     }
 }

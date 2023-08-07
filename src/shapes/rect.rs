@@ -1,7 +1,11 @@
-use std::fmt::Display;
+use std::{fmt::Display, str::FromStr};
 
-use super::{area::Area, collisions::{Points, Contains}};
+use super::{
+    area::Area,
+    collisions::{Contains, Points},
+};
 
+#[derive(Debug, Clone)]
 pub struct Rect {
     pub x: f64,
     pub y: f64,
@@ -89,5 +93,25 @@ impl IntoIterator for &Rect {
             ],
             idx: 0,
         };
+    }
+}
+
+impl FromStr for Rect {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let parts = s.split(" ").collect::<Vec<_>>();
+        if parts.len() != 4 {
+            return Err(anyhow::anyhow!("Invalid number of parts"));
+        }
+        let x = parts[0].parse::<f64>()?;
+        let y = parts[1].parse::<f64>()?;
+        let width = parts[2].parse::<f64>()?;
+        let height = parts[3].parse::<f64>()?;
+        return Ok(Rect {
+            x,
+            y,
+            width,
+            height,
+        });
     }
 }
